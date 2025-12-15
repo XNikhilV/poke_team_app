@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PokeTeam Builder</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>My PokeTeam</h1>
+
+        <% if (error) { %>
+            <p style="color: red; font-weight: bold;"><%= error %></p>
+        <% } %>
+
+        <form action="/add" method="POST">
+            <input type="text" name="pokemonName" placeholder="Enter Pokemon Name (e.g. Pikachu)" required>
+            <button type="submit">Add to Team</button>
+        </form>
+
+        <hr>
+
+        <div class="team-grid">
+            <% if (team.length === 0) { %>
+                <p>No Pokemon in your team yet.</p>
+            <% } else { %>
+                <% team.forEach(function(poke) { %>
+                    <div class="card type-<%= poke.type %>">
+                        <img src="<%= poke.sprite %>" alt="<%= poke.name %>">
+                        <h3><%= poke.name.toUpperCase() %></h3>
+                        <p>Type: <%= poke.type %></p>
+                        <div class="stats-container">
+                            <div class="stat-box">
+                                <span class="stat-label">HP</span>
+                                <span class="stat-val"><%= poke.hp %></span>
+                            </div>
+                            <div class="stat-box">
+                                <span class="stat-label">ATK</span>
+                                <span class="stat-val"><%= poke.attack %></span>
+                            </div>
+                        </div>
+                        <form action="/delete/<%= poke._id %>" method="POST" style="margin-top: 10px;">
+                        <button type="submit" style="background-color: red; padding: 5px 10px; font-size: 0.8rem;">X</button>
+                        </form>
+                    </div>
+                <% }); %>
+            <% } %>
+        </div>
+        
+        <br>
+        <form action="/reset" method="POST">
+            <button type="submit" style="background-color: #555;">Reset Team</button>
+        </form>
+    </div>
+</body>
+</html>
